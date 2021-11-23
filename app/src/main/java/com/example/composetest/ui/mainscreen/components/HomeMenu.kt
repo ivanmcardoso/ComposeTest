@@ -1,6 +1,7 @@
 package com.example.composetest.ui.mainscreen.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -14,17 +15,20 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.composetest.MainActivity
 import com.example.composetest.R
 import com.example.composetest.theme.Caption
 
 @Preview
 @Composable
 fun HomeMenuPreview() {
-    HomeMenu()
+    HomeMenu(rememberNavController())
 }
 
 @Composable
-fun HomeMenu() {
+fun HomeMenu(navController: NavController) {
     Card(
         elevation = 4.dp,
         backgroundColor = colorResource(id = R.color.white),
@@ -40,8 +44,10 @@ fun HomeMenu() {
         ) {
             MenuListItem(
                 painter = painterResource(id = R.drawable.ic_send_black_36),
-                message = "Send"
-            )
+                message = "Send",
+            ){
+                navController.navigate(route = MainActivity.RouterPaths.ROUTER_ONBOARD)
+            }
             MenuListItem(
                 painter = painterResource(id = R.drawable.ic_card_giftcard_black_36),
                 message = "Bills"
@@ -59,8 +65,10 @@ fun HomeMenu() {
 }
 
 @Composable
-fun MenuListItem(painter: Painter, message: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+fun MenuListItem(painter: Painter, message: String, onClick: () -> Unit = {}) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable { onClick() }) {
         CardWithIcon(painter)
         Caption(text = message)
     }

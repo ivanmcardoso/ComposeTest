@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.composetest.R
 import com.example.composetest.data.model.CardInfo
 import com.example.composetest.ui.mainscreen.components.CardListITem
@@ -25,11 +27,11 @@ import com.example.composetest.ui.mainscreen.components.HomeMenu
 @Preview(showSystemUi = true)
 @Composable
 fun PreviewHeader() {
-    MainScreen(MainScreenViewModel())
+    MainScreen(rememberNavController())
 }
 
 @Composable
-fun MainScreen(viewModel: MainScreenViewModel) {
+fun MainScreen(navController: NavController, viewModel: MainScreenViewModel = MainScreenViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.loadCardList()
     }
@@ -42,7 +44,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                 BackgroundView()
                 CardHeader(viewModel.userName.value, viewModel.cardList.value)
                 AnchorView()
-                Menu()
+                Menu(navController)
             }
         }
     }
@@ -84,13 +86,13 @@ private fun AnchorView() {
 }
 
 @Composable
-private fun Menu() {
+private fun Menu(navController: NavController) {
     Box(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .layoutId(LayoutIds.MENU_ID)
     ) {
-        HomeMenu()
+        HomeMenu(navController = navController)
     }
 }
 
