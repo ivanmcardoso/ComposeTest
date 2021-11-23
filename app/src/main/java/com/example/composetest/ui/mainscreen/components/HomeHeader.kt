@@ -1,4 +1,4 @@
-package com.example.composetest.ui.components
+package com.example.composetest.ui.mainscreen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

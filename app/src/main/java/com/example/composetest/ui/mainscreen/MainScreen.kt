@@ -1,4 +1,4 @@
-package com.example.composetest.ui
+package com.example.composetest.ui.mainscreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
@@ -16,18 +17,22 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import com.example.composetest.R
-import com.example.composetest.ui.components.CardListITem
-import com.example.composetest.ui.components.Header
-import com.example.composetest.ui.components.HomeMenu
+import com.example.composetest.data.model.CardInfo
+import com.example.composetest.ui.mainscreen.components.CardListITem
+import com.example.composetest.ui.mainscreen.components.Header
+import com.example.composetest.ui.mainscreen.components.HomeMenu
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun PreviewHeader() {
-    MainScreen()
+    MainScreen(MainScreenViewModel())
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainScreenViewModel) {
+    LaunchedEffect(Unit) {
+        viewModel.loadCardList()
+    }
     Surface(
         color = Color.LightGray,
         modifier = Modifier.fillMaxSize(),
@@ -35,7 +40,7 @@ fun MainScreen() {
         Column {
             ConstraintLayout(constraintSet) {
                 BackgroundView()
-                CardHeader()
+                CardHeader(viewModel.userName.value, viewModel.cardList.value)
                 AnchorView()
                 Menu()
             }
@@ -54,16 +59,16 @@ private fun BackgroundView() {
 }
 
 @Composable
-private fun CardHeader() {
+private fun CardHeader(userName: String, cardList: List<CardInfo>) {
     Column(
         Modifier
             .padding(vertical = 20.dp)
             .layoutId(LayoutIds.CARDS_ID)
     ) {
-        Header(name = "Ivan")
+        Header(name = userName)
         CardList {
-            items(listOf("a", "b", "c")) {
-                CardListITem()
+            items(cardList) { cardInfo ->
+                CardListITem(cardInfo)
             }
         }
     }
