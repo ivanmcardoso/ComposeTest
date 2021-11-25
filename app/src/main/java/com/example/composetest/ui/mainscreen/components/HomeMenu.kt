@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.composetest.MainActivity
 import com.example.composetest.R
 import com.example.composetest.theme.Caption
+import com.example.composetest.util.CustomDialog
 
 @Preview
 @Composable
@@ -29,6 +32,7 @@ fun HomeMenuPreview() {
 
 @Composable
 fun HomeMenu(navController: NavController) {
+    val openDialog = remember { mutableStateOf(false) }
     Card(
         elevation = 4.dp,
         backgroundColor = colorResource(id = R.color.white),
@@ -51,16 +55,28 @@ fun HomeMenu(navController: NavController) {
             MenuListItem(
                 painter = painterResource(id = R.drawable.ic_card_giftcard_black_36),
                 message = "Bills"
-            )
+            ){
+                openDialog.value = true
+            }
             MenuListItem(
                 painter = painterResource(id = R.drawable.ic_shopping_cart_black_36),
                 message = "Shop"
-            )
+            ){
+                openDialog.value = true
+            }
             MenuListItem(
                 painter = painterResource(id = R.drawable.ic_document_scanner_black_36),
                 message = "Scan"
-            )
+            ){
+                openDialog.value = true
+            }
         }
+    }
+    if (openDialog.value){
+        CustomDialog(title = "Ops!", message ="Feature ainda não implementada" , buttonText = "Entendi", onButtonClick = { openDialog.value = !openDialog.value }) {
+            openDialog.value = !openDialog.value
+    }
+
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
@@ -31,7 +32,8 @@ fun PreviewHeader() {
 }
 
 @Composable
-fun MainScreen(navController: NavController, viewModel: MainScreenViewModel = MainScreenViewModel()) {
+fun MainScreen(navController: NavController) {
+    val viewModel: MainScreenViewModel = remember { MainScreenViewModel() }
     LaunchedEffect(Unit) {
         viewModel.loadCardList()
     }
